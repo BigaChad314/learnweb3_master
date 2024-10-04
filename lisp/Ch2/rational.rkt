@@ -1,5 +1,12 @@
 #lang racket
 
+;; (cons 1 (cons 2 (cons 3 0)))  ; 결과: (1 2 3)
+
+;; (car '(1 2 3))   ; 결과: 1
+;; (cdr '(1 2 3))   ; 결과: (2 3)
+;; (cdr (cdr '(1 2 3))) ; 결과: (3)
+
+
 (define (numer x) (car x))
 (define (denom x) (cdr x))
 
