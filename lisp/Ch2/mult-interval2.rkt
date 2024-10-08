@@ -5,6 +5,15 @@
 (define (lower-bound x) (car x))
 (define (upper-bound x) (cdr x))
 
+(define (make-center-width c w)
+    (make-interval (- c w) (+ c w)))
+
+(define (center i)
+    (/ (+ (lower-bound i) (upper-bound i)) 2))
+
+(define (width i)
+    (/ (- (lower-bound i) (upper-bound i)) 2))
+
 (define (mul-interval x y)
   (let ((x1 (lower-bound x))
         (x2 (upper-bound x))
