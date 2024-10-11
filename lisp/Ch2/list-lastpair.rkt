@@ -11,7 +11,8 @@
     (+ 1 (length (cdr items)))))
 
 ;; (define (last-pair items)
-;;     (list-ref items (- (length items) 1)))
+;;     (list-ref items (- (length items) 1))) // 원소를 return 할때.
+
 (define (last-pair xs)
   (if (null? (cdr xs))
       xs
