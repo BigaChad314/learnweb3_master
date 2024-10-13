@@ -15,3 +15,17 @@
       (append (reverse (cdr lst)) (list (car lst)))))  ; 재귀적으로 호출하여 뒤집음
 
 (reverse (list 1 4 9 16 25))
+(newline)
+
+(define (deep-reverse x)
+  (if (pair? x)
+      (map deep-reverse (reverse x))
+      x))
+
+(define x (list (list 1 2) (list 3 4)))
+(display x)
+(newline)
+(reverse x)
+(newline)
+(deep-reverse x)
+
