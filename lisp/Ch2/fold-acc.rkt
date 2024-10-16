@@ -22,3 +22,16 @@
 (fold-left / 1 (list 1 2 3))
 (fold-right list '() (list 1 2 3))
 (fold-left list '() (list 1 2 3))
+
+;; Part 2. reverse
+(define (reverse-right sequence)
+    (fold-right (lambda (x y) (append y (list x))) '() sequence))
+
+(define (reverse-left sequence)
+    (fold-left (lambda (x y) (cons y x)) '() sequence))
+
+(define x (list (list 1 2) (list 3 4)))
+(display x)
+(newline)
+(reverse-right x)
+(reverse-left x)
