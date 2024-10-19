@@ -23,3 +23,9 @@
             (beside (below painter top-left)
                 (below bottom-right corner))))))
 
+(define (square-limit painter n)
+    (let ((quarter (corner-split painter n)))
+        (let ((half (beside (flip-horiz quarter) quarter)))
+            (below (flip-vert half) half))))
+
+(paint (corner-split einstein 10))
