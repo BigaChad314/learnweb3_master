@@ -20,9 +20,9 @@
     ))
 
 (define (scale-vect v s)
-    (make-vect (* s (xcor-vect))
-                (* s (ycor-vect))
+    (make-vect (* s (xcor-vect v))
+                (* s (ycor-vect v))
     ))
 
-(define (make-frame origin edge1 edge2)
-    (list origin edge1 edge2))
+(add-vect (make-vect 1 2) (make-vect 3 4))
+(scale-vect (make-vect 1 2) 5)
