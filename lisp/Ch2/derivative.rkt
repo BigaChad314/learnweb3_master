@@ -54,17 +54,25 @@
 (define base cadr)
 (define exponent caddr)
 
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+          
 (define (sum? expr)
   (and (pair? expr) (eq? (car expr) '+)))
 
 (define addend cadr)
-(define augend caddr)
+(define (augend sum)
+  (accumulate make-sum 0 (cddr sum)))
 
 (define (product? expr)
   (and (pair? expr) (eq? (car expr) '*)))
 (define multiplier cadr)
-(define multiplicand caddr)
+(define (multiplicand product)
+  (accumulate make-product 1 (cddr product)))
 
 (deriv '(+ x 3) 'x)
-(deriv '(* (* x y) (+ x 3)) 'x)
+(deriv '(* x y (+ x 3)) 'x)
 (deriv '(* 3 (** x 5)) 'x)
