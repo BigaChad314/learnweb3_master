@@ -1,7 +1,0 @@
-{
-  "editor.formatOnType": true,
-  "racket.executablePath": "/Applications/Racket v8.14/bin/racket",
-  "[commonlisp]": {
-    "editor.wordSeparators": "`|;:'\",()"
-  }
-}
