@@ -26,8 +26,17 @@
         (else (union-set (cdr set1) 
                         (cons (car set1) set2)))))
 
+(define (overlap-adjoin x set)
+    (cons x set))
+
+(define (overlap-union set1 set2)
+    (append set1 set2))
+
 (adjoin-set 2 '(2 3))
 (element-of-set? 1 '(3 2 1))
 (intersection-set '(1) '(1 2))
 (union-set '(3) '(1 2))
 (union-set '(3 4 5 1) '(1 2))
+(newline)
+(overlap-adjoin 2 '(2 3))
+(overlap-union '(3 4 5 1) '(1 2))
