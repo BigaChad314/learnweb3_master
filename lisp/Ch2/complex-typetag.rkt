@@ -70,3 +70,7 @@
         ((polar? z)
          (angle-polar (contents z)))
         (else (error 'angle "unknown type" z))))
+
+;; Generic constructors
+(define make-from-real-imag make-from-real-imag-rectangular)
+(define make-from-mag-ang make-from-mag-ang-polar)
