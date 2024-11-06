@@ -85,3 +85,15 @@
     (if proc
         (apply proc args)
         (error op "no method for type" op type))))
+
+;; generic selectors (일반화된 고르개 연산)
+(define (real-part z) (apply-generic 'real-part z))
+(define (imag-part z) (apply-generic 'imag-part z))
+(define (magnitude z) (apply-generic 'magnitude z))
+(define (angle z) (apply-generic 'angle z))
+
+;; generic constructions (일반화된 짜맞추개 연산)
+(define (make-from-real-imag x y)
+  (apply-specific 'make-from-real-imag 'rectangular x y))
+(define (make-from-mag-ang r a)
+  (apply-specific 'make-from-mag-ang 'polar r a))
