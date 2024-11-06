@@ -71,3 +71,17 @@
        (lambda (x y) (tag (make-from-real-imag x y))))
   (put 'make-from-mag-ang 'polar
        (lambda (r a) (tag (make-from-mag-ang r a)))))
+
+;; helper function to apply generic operations
+(define (apply-generic op . args)
+  (let* ((type-tags (map type-tag args))
+         (proc (get op type-tags)))
+    (if proc
+        (apply proc (map contents args))
+        (error 'apply-generic "no method for argument types" op type-tags))))
+
+(define (apply-specific op type . args)
+  (let ((proc (get op type)))
+    (if proc
+        (apply proc args)
+        (error op "no method for type" op type))))
