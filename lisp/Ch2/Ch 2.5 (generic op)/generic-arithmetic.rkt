@@ -18,6 +18,7 @@
 
 ;; put and get
 (define global-array '())
+
 (define (make-entry k v) (list k v))
 (define (key entry) (car entry))
 (define (value entry) (cadr entry))
@@ -125,40 +126,23 @@
   (= (* (numer x) (denom y))
      (* (numer y) (denom x))))
 
-;; arithmetics for complex number
-(define (add-complex z1 z2)
-  (make-from-real-imag
-   (+ (real-part z1) (real-part z2))
-   (+ (imag-part z1) (imag-part z2))))
-(define (sub-complex z1 z2)
-  (make-from-real-imag
-   (- (real-part z1) (real-part z2))
-   (- (imag-part z1) (imag-part z2))))
-(define (mul-complex z1 z2)
-  (make-from-mag-ang
-   (* (magnitude z1) (magnitude z2))
-   (+ (angle z1) (angle z2))))
-(define (div-complex z1 z2)
-  (make-from-mag-ang
-   (/ (magnitude z1) (magnitude z2))
-   (- (angle z1) (angle z2))))
 
-;; make from real-imag and mag-ang
-(define (make-from-real-imag x y)
-  (lambda (op)
-    (cond ((eq? op 'real-part) x)
-          ((eq? op 'imag-part) y)
-          ((eq? op 'magnitude) (sqrt (+ (square x) (square y))))
-          ((eq? op 'angle) (atan y x))
-          (else (error 'make-from-real-imag "unknown op" op)))))
+;; ;; make from real-imag and mag-ang
+;; (define (make-from-real-imag x y)
+;;   (lambda (op)
+;;     (cond ((eq? op 'real-part) x)
+;;           ((eq? op 'imag-part) y)
+;;           ((eq? op 'magnitude) (sqrt (+ (square x) (square y))))
+;;           ((eq? op 'angle) (atan y x))
+;;           (else (error 'make-from-real-imag "unknown op" op)))))
 
-(define (make-from-mag-ang r a)
-  (lambda (op)
-    (cond ((eq? op 'real-part) (* r (cos a)))
-          ((eq? op 'imag-part) (* r (sin a)))
-          ((eq? op 'magnitude) r)
-          ((eq? op 'angle) a)
-          (else (error 'make-from-mag-ang "unknown op" op)))))
+;; (define (make-from-mag-ang r a)
+;;   (lambda (op)
+;;     (cond ((eq? op 'real-part) (* r (cos a)))
+;;           ((eq? op 'imag-part) (* r (sin a)))
+;;           ((eq? op 'magnitude) r)
+;;           ((eq? op 'angle) a)
+;;           (else (error 'make-from-mag-ang "unknown op" op)))))
 
 ;; generic arithmetics
 (define (add x y) (apply-generic 'add x y))
@@ -177,6 +161,7 @@
 (define (make-scheme-number n)
   (apply-specific 'make 'scheme-number n))
 
+;; interface for generic arithmetic
 (define (rational-pkg)
   (define (tag x) (attach-tag 'rational x))
   (put 'add '(rational rational) (lambda (x y) (tag (add-rat x y))))
@@ -189,9 +174,32 @@
   (apply-specific 'make 'rational n d))
 
 (define (complex-pkg)
+
+  (define (make-from-real-imag x y)
+    ((get 'make-from-real-imag 'rectangular) x y))
+  (define (make-from-mag-ang r a)
+    ((get 'make-from-mag-ang 'polar) r a))
+  
+  (define (add-complex z1 z2)
+  (make-from-real-imag
+   (+ (real-part z1) (real-part z2))
+   (+ (imag-part z1) (imag-part z2))))
+  (define (sub-complex z1 z2)
+    (make-from-real-imag
+    (- (real-part z1) (real-part z2))
+    (- (imag-part z1) (imag-part z2))))
+  (define (mul-complex z1 z2)
+    (make-from-mag-ang
+    (* (magnitude z1) (magnitude z2))
+    (+ (angle z1) (angle z2))))
+  (define (div-complex z1 z2)
+    (make-from-mag-ang
+    (/ (magnitude z1) (magnitude z2))
+    (- (angle z1) (angle z2))))
+
   (define (tag z) (attach-tag 'complex z))
-  (rectangular-pkg)
-  (polar-pkg)
+  ;; (rectangular-pkg)
+  ;; (polar-pkg)
   (put 'add '(complex complex) (lambda (z1 z2) (tag (add-complex z1 z2))))
   (put 'sub '(complex complex) (lambda (z1 z2) (tag (sub-complex z1 z2))))
   (put 'mul '(complex complex) (lambda (z1 z2) (tag (mul-complex z1 z2))))
