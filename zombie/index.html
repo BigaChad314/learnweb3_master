@@ -42,6 +42,15 @@
             getZombiesByOwner(userAccount).then(displayZombies);
           }
         }, 100);
+
+        // Start here
+        cryptoZombies.events
+          .Transfer({ filter: { _to: userAccount } })
+          .on("data", function (event) {
+            let data = event.returnValues;
+            getZombiesByOwner(userAccount).then(displayZombies);
+          })
+          .on("error", console.error);
       }
 
       function displayZombies(ids) {
@@ -100,14 +109,13 @@
           });
       }
 
-      // Start here
       function levelUp(zombieId) {
         $("#txStatus").text("Leveling up your zombie...");
         return cryptoZombies.methods
           .levelUp(zombieId)
           .send({
             from: userAccount,
-            value: web3js.utils.toWei("0.001", "ether"),
+            value: web3.utils.toWei("0.001", "ether"),
           })
           .on("receipt", function (receipt) {
             $("#txStatus").text(
